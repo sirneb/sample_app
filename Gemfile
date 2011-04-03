@@ -21,6 +21,7 @@ source 'http://rubygems.org'
 # gem 'bj'
 # gem 'nokogiri'
 gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'gravatar_image_tag'
 # gem 'aws-s3', :require => 'aws/s3'
 
 group :development do
@@ -36,6 +37,7 @@ group :test do
 
     gem 'rspec'
     gem 'webrat'
+    gem 'factory_girl_rails'
 
 end
 
