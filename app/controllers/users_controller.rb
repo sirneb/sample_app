@@ -9,26 +9,36 @@ class UsersController < ApplicationController
   end
 
   def new
-    @title = "Sign up"
-    @user = User.new
+    # disallow create when signed in
+
+    if signed_in?
+      redirect_to(root_path)
+    else
+      @title = "Sign up"
+      @user = User.new
+    end
   end
 
   def create
-    @user = User.new(params[:user])
-    if @user.save
-      # Handle a successful save.
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+    # disallow create when signed in
+    if signed_in?
+      redirect_to(root_path)
     else
-      # reset the password field
-      @user.password = ""
-      @user.password_confirmation = ""
+      @user = User.new(params[:user])
+      if @user.save
+        # Handle a successful save.
+        sign_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        redirect_to @user
+      else
+        # reset the password field
+        @user.password = ""
+        @user.password_confirmation = ""
       
-      
-      # redirects back
-      @title = "Sign up"
-      render 'new'
+        # redirects back
+        @title = "Sign up"
+        render 'new'
+      end
     end
   end
 
@@ -62,9 +72,15 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
+    if current_user == User.find(params[:id])
+      flash[:error] = "Cannot delete thyself, Romeo!"
+    else
+      User.find(params[:id]).destroy
+      flash[:success] = "User destroyed."
+    end
+
     redirect_to users_path
+
   end
 
   private 
