@@ -310,10 +310,7 @@ describe UsersController do
         response.should redirect_to(root_path)
       end
 
-      it "should not have delete function" do
-        get :index
-        response.should_not have_selector("a", :content => "delete")
-      end
+     
     end
 
   end
@@ -365,10 +362,7 @@ describe UsersController do
         response.should redirect_to(users_path)
       end
 
-      it "should have delete function" do
-        get :index
-        response.should have_selector("a", :content => "delete")
-      end
+    
 
 
     end
